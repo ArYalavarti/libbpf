@@ -101,7 +101,7 @@ $(OBJDIR)/libbpf.so.$(LIBBPF_MAJOR_VERSION): $(OBJDIR)/libbpf.so.$(LIBBPF_VERSIO
 
 $(OBJDIR)/libbpf.so.$(LIBBPF_VERSION): $(SHARED_OBJS)
 	$(call msg,CC,$@)
-	$(Q)$(CC) -shared -Wl,--version-script=$(VERSION_SCRIPT) \
+	$(Q)$(CC) -fPIC	 -shared -Wl,--version-script=$(VERSION_SCRIPT) \
 		  -Wl,-soname,libbpf.so.$(LIBBPF_MAJOR_VERSION) \
 		  $^ $(ALL_LDFLAGS) -o $@
 
@@ -117,11 +117,11 @@ $(STATIC_OBJDIR) $(SHARED_OBJDIR):
 
 $(STATIC_OBJDIR)/%.o: %.c | $(STATIC_OBJDIR)
 	$(call msg,CC,$@)
-	$(Q)$(CC) $(ALL_CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(Q)$(CC) -fPIC $(ALL_CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(SHARED_OBJDIR)/%.o: %.c | $(SHARED_OBJDIR)
 	$(call msg,CC,$@)
-	$(Q)$(CC) $(ALL_CFLAGS) $(SHARED_CFLAGS) $(CPPFLAGS) -c $< -o $@
+	$(Q)$(CC) -fPIC $(ALL_CFLAGS) $(SHARED_CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 define do_install
 	$(call msg,INSTALL,$1)
